@@ -1,0 +1,5 @@
+# block node modules
+node_modules
+
+#block package lock
+package-lock.json
