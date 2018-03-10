@@ -11,7 +11,10 @@ module.exports = {
   update,
   search
 };
-
+/**
+ * Just to know how many iteration will it take.
+ *
+ */
 function initialize() {
   return new Promise((resolve, reject) => {
     url = "https://www.carworkz.com/mumbai/regular-service?format=json&page=1";
@@ -30,6 +33,9 @@ function initialize() {
   });
 }
 
+/**
+ * Scrap and return the scrapped data.
+ */
 function scrapIt() {
   let baseUrl = "https://www.carworkz.com";
   return new Promise((resolve, reject) => {
@@ -115,7 +121,6 @@ function scrapIt() {
                   return resolve(theArr);
                 }
               });
-              //   return resolve(theArr);
             })
             .catch(error => {
               return reject(error);
@@ -127,7 +132,11 @@ function scrapIt() {
       });
   });
 }
-
+/**
+ * Gets servicess from service url.
+ * @param {Object} element
+ * @returns {Object}
+ */
 function processService(element) {
   return new Promise((resolve, reject) => {
     let options = {
@@ -156,10 +165,18 @@ function processService(element) {
   });
 }
 
+/**
+ * Saves Array of Scrapped Items
+ *  at a Time.
+ * @param {Array} payload
+ */
 function saveIt(payload) {
   return Scrapy.insertMany(payload);
 }
 
+/**
+ * updpates all the docs with their services.
+ */
 function update() {
   return new Promise((resolve, reject) => {
     let some_data = [];
@@ -186,6 +203,10 @@ function update() {
   });
 }
 
+/**
+ * Search by attributes.
+ * @param {Object} payload
+ */
 function search(payload) {
   let query = {};
   if (payload.name) {
