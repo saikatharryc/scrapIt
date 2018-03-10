@@ -223,7 +223,7 @@ function search(payload) {
       location: { $regex: payload.location, $options: "i" }
     });
   }
-  if (payload.location) {
+  if (payload.mobile_no) {
     Object.assign(query, {
       mobile_no: { $regex: Number(payload.mobile_no), $options: "i" }
     });
