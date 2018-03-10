@@ -2,11 +2,11 @@ var mongoose = require("mongoose");
 
 var scrapySchema = new mongoose.Schema({
   name: String,
-  rating: String,
-  likes: String,
-  votes: String,
+  rating: Number,
+  likes: Number,
+  votes: Number,
   location: String,
-  mobile_no: String,
+  mobile_no: Number,
   service_url: String,
   services: Array
 });
