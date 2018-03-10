@@ -2,9 +2,12 @@ const request = require("request-promise");
 const mongoose = require("mongoose");
 const cheerio = require("cheerio");
 
+const Scrapy = mongoose.model("Scrapy");
+
 module.exports = {
   scrapIt,
-  processService
+  processService,
+  saveIt
 };
 
 function initialize() {
@@ -79,6 +82,17 @@ function scrapIt() {
                   $(article)
                     .find(".select-jobs")
                     .attr("href");
+                //tackle in some other way if possible
+                // processService(payloadObject)
+                //   .then(data => {
+                //     theArr.push(data);
+                //     if (processedJson.meta["X-Total-Count"] == theArr.length) {
+                //       return resolve(theArr);
+                //     }
+                //   })
+                //   .catch(error => {
+                //     return reject(error);
+                //   });
 
                 theArr.push(payloadObject);
                 if (processedJson.meta["X-Total-Count"] == theArr.length) {
@@ -98,39 +112,34 @@ function scrapIt() {
   });
 }
 
-function processService(payload) {
+function processService(element) {
   return new Promise((resolve, reject) => {
-    let data = [];
-    payload.forEach(
-      element => {
-        let options = {
-          url: element.service_url,
-          transform: function(body) {
-            return cheerio.load(body);
-          }
-        };
-
-        request(options)
-          .then($ => {
-            let services_single = [];
-            $(".serv_custom_list").each((i, services) => {
-              services_single.push({
-                services: $(services)
-                  .find("li")
-                  .text()
-              });
-            });
-            element.services = services_single;
-            data.push(element);
-            console.log(data.length);
-          })
-          .catch(error => {
-            // continue;
-          });
-      },
-      () => {
-        return resolve(data);
+    let options = {
+      url: element.service_url,
+      transform: function(body) {
+        return cheerio.load(body);
       }
-    );
+    };
+
+    request(options)
+      .then($ => {
+        let services_single = [];
+        $(".serv_custom_list").each((i, services) => {
+          services_single.push({
+            services: $(services)
+              .find("li")
+              .text()
+          });
+        });
+        element.services = services_single;
+        return resolve(element);
+      })
+      .catch(error => {
+        // continue;
+      });
   });
+}
+
+function saveIt(payload) {
+  return Scrapy.insertMany(payload);
 }
