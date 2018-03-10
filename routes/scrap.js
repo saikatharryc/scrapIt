@@ -2,10 +2,14 @@ const express = require("express");
 const router = express.Router();
 const scrapController = require("../controller/scrapController");
 
+router.get("/", (req, res, next) => {
+  return res.send("Yeah, water is boiling!");
+});
+
 /**
  * Scrapping Initialize
  */
-router.get("/", (req, res, next) => {
+router.get("/scrap", (req, res, next) => {
   scrapController
     .scrapIt()
     .then(data => {
