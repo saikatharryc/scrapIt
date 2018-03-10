@@ -6,7 +6,7 @@ var scrapySchema = new mongoose.Schema({
   likes: Number,
   votes: Number,
   location: String,
-  mobile_no: Number,
+  mobile_no: String,
   service_url: String,
   services: Array
 });
