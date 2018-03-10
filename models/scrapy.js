@@ -7,7 +7,8 @@ var scrapySchema = new mongoose.Schema({
   votes: String,
   location: String,
   mobile_no: String,
-  service_url: String
+  service_url: String,
+  services: Array
 });
 
 module.exports = { scrapySchema };
