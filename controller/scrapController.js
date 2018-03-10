@@ -103,11 +103,9 @@ function scrapIt() {
                   (payloadObject.mobile_no = $(article)
                     .find(".mobile_no")
                     .text()
-                    ? parseInt(
-                        $(article)
-                          .find(".mobile_no")
-                          .text()
-                      )
+                    ? $(article)
+                        .find(".mobile_no")
+                        .text()
                     : null);
 
                 payloadObject.service_url =
@@ -179,26 +177,25 @@ function saveIt(payload) {
  */
 function update() {
   return new Promise((resolve, reject) => {
-    let some_data = [];
     return Scrapy.find({})
       .exec()
       .then(data => {
-        let i = 0;
-        for (let elements of data) {
-          i++;
-          return processService(elements)
+        let some_data = [];
+        data.forEach(elements => {
+          processService(elements)
             .then(updated_data => {
               elements.services = updated_data.services;
               some_data.push(elements);
               elements.save();
+              console.log(some_data.length);
+              if (data.length == some_data.length) {
+                return resolve(some_data);
+              }
             })
             .catch(error => {
               return reject(error);
             });
-          if (data.length == i) {
-            return resolve(some_data);
-          }
-        }
+        });
       });
   });
 }
