@@ -1,5 +1,7 @@
 ## Simple Crawler
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/saikatharryc/scrapIt.svg)](https://greenkeeper.io/)
+
 ### To Run Follow the below steps:
 * clone the repo 
 
